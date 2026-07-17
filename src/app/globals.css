@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Sphinx design tokens — "stone & night"
+   Night-sky indigo for dark sections, limestone bone for light sections,
+   a single gold accent used sparingly. Change these five values and the
+   whole site restyles.
+--------------------------------------------------------------------------- */
+:root {
+  --color-night: #101422; /* deep indigo-black — hero, footer, CTA band */
+  --color-ink: #20243a; /* body text on light backgrounds */
+  --color-bone: #f4f3ee; /* warm limestone — main page background */
+  --color-sand: #e4e1d6; /* borders, dividers on light */
+  --color-stone: #7d7a6f; /* muted captions, secondary text */
+  --color-gold: #c29a3f; /* the one accent — use with restraint */
+  --color-gold-bright: #e0bf6a; /* hover state of gold on dark */
+
+  --font-display: var(--font-marcellus);
+  --font-sans: var(--font-hanken);
+  --font-mono: var(--font-plex);
+}
+
+/* ------------------------------- base ----------------------------------- */
+
+body {
+  background-color: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-night);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ----------------------------- utilities -------------------------------- */
+
+/* Section label: small mono caps with a gold diamond. Used above headings. */
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.eyebrow::before {
+  content: "◆";
+  color: var(--color-gold);
+  font-size: 0.6rem;
+}
+.eyebrow-dark {
+  color: var(--color-sand);
+}
+
+/* Display headings */
+.display {
+  font-family: var(--font-display), serif;
+  letter-spacing: 0.01em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+/* ------------------------------ motion ----------------------------------- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.fade-up-1 { animation-delay: 0.08s; }
+.fade-up-2 { animation-delay: 0.18s; }
+.fade-up-3 { animation-delay: 0.3s; }
+
+@keyframes pulse-dot {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-2px); }
+}
+
+.typing-dot {
+  animation: pulse-dot 1.1s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .typing-dot {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
