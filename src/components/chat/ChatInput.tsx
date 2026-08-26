@@ -18,41 +18,44 @@ export default function ChatInput({ onSend, disabled }: Props) {
   }
 
   return (
-    <div className="border-t border-sand bg-white p-3">
-      <div className="flex items-end gap-2 rounded-xl border border-sand bg-bone/60 p-2">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              submit();
-            }
-          }}
-          placeholder="Type your message…"
-          aria-label="Ask Sphinx anything"
-          disabled={disabled}
-          rows={1}
-          className="max-h-28 min-h-[2.5rem] flex-1 resize-none bg-transparent px-2 py-2 text-sm
-                     text-ink placeholder:text-stone/70 focus:outline-none disabled:opacity-50"
-        />
-        <button
-          onClick={submit}
-          disabled={disabled || !text.trim()}
-          aria-label="Send message"
-          className="grid size-9 shrink-0 place-items-center rounded-md bg-gold text-night
-                     transition-colors hover:bg-gold-bright disabled:opacity-40"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M4 12l16-8-6 8 6 8-16-8z"
-              fill="currentColor"
-              fillRule="evenodd"
-            />
-          </svg>
-        </button>
+    <div className="border-t border-sand/70 bg-gradient-to-b from-white to-bone/40 p-3">
+      <div className="rounded-2xl border border-sand bg-white/90 p-2 shadow-[0_8px_24px_rgba(20,20,20,0.06)] backdrop-blur-sm">
+        <div className="flex items-end gap-2">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                submit();
+              }
+            }}
+            placeholder="Type your message…"
+            aria-label="Ask Sphinx anything"
+            disabled={disabled}
+            rows={1}
+            className="max-h-28 min-h-[2.75rem] flex-1 resize-none bg-transparent px-3 py-2.5 text-sm leading-6
+                       text-ink placeholder:text-stone/70 focus:outline-none disabled:opacity-50"
+          />
+          <button
+            onClick={submit}
+            disabled={disabled || !text.trim()}
+            aria-label="Send message"
+            className="grid size-10 shrink-0 place-items-center rounded-xl bg-night text-bone shadow-sm
+                       transition-all duration-200 hover:-translate-y-0.5 hover:bg-night/90
+                       disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path
+                d="M4 12l16-8-6 8 6 8-16-8z"
+                fill="currentColor"
+                fillRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
-      <p className="mt-2 px-1 text-[11px] uppercase tracking-[0.2em] text-stone">
+      <p className="mt-2 px-1 text-[11px] uppercase tracking-[0.2em] text-stone/80">
         Press Enter to send • Shift + Enter for a new line
       </p>
     </div>
