@@ -1,0 +1,15 @@
+# Tested with the versions noted on the right (October 2026).
+docling>=2.130                 # 2.139.0  layout analysis, OCR, TableFormer; pulls torch + transformers
+docling-core[chunking]>=2.100  # 2.101.1  DoclingDocument, HybridChunker
+qdrant-client>=1.15            # 1.19.1   hybrid (dense + sparse) search, RRF fusion, tenant indexes
+ollama>=0.5                    # 0.6.3    /api/embed batch embeddings, VLM/LLM enrichment
+transformers>=4.45             # 5.19.0   embedding-model tokenizer for token-accurate chunk sizes
+pypdf>=5                       # 5.9.0    cheap scanned-PDF triage
+defusedxml>=0.7                # 0.7.1    safe parsing of untrusted XML
+
+# Optional: cross-encoder reranking in search() when RERANK_MODEL is set
+# sentence-transformers>=3
+
+# Ollama models (run once):
+#   ollama pull bge-m3        # embeddings: multilingual, 8k context, 1024-d
+#   ollama pull gemma3:12b    # table summaries + figure descriptions (vision-capable)

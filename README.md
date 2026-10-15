@@ -1,8 +1,7 @@
 # Sphinx — website + chat widget (Month 1)
 
-Marketing site for Sphinx, the AI agent for B2B websites. The chat widget is
-live with a stub brain; in Month 2 only `src/app/api/chat/route.ts` gets the
-real RAG pipeline.
+Marketing site for Sphinx, the AI agent for B2B websites. The site includes a local Ollama + Chroma RAG chat and an interactive
+document demo at `/demo`.
 
 ## Getting started
 
@@ -20,8 +19,15 @@ cp .env.example .env.local   # fill values as needed
 npm run dev                  # http://localhost:3000
 ```
 
-No extra npm packages are required — everything uses Next.js, Tailwind, and
-inline SVGs.
+Install the Python dependencies with `pip install -r requirements.txt` and
+make sure Ollama is running with the `bge-large:latest` embedding and
+`mistral:latest` chat models available. Set `PYTHON_EXECUTABLE` in `.env.local`
+if Python is not on `PATH`.
+
+The `/demo` page accepts PDF, DOCX, PPTX, XLSX, and common text-based formats.
+Uploads are chunked and embedded into the existing Chroma collection, with a
+random browser-scoped session ID attached to every chunk so demo chats only
+retrieve that browser's uploaded documents.
 
 ### Tailwind version note
 
@@ -52,8 +58,10 @@ via `next/font` in `layout.tsx`.
 
 - `src/content/` — FAQ + features as typed data. **This is the future
   knowledge base**: write every answer as the bot should say it, links included.
-- `src/components/chat/` — the widget (the future embeddable product). Talks to
-  `/api/chat` with `{ messages } -> { reply }`; that contract is fixed.
+- `src/components/chat/` — the site chat widget and full-page document demo.
+  `/api/chat` accepts `{ messages, sessionId? } -> { reply }`.
+- `src/app/api/documents/route.ts` and `scripts/ingest_documents.py` — validate,
+  extract, chunk, and add demo uploads to the Chroma vector collection.
 - `src/lib/linkify.tsx` — renders internal routes in bot replies as real links.
   Add new routes here when you add pages.
 - `src/app/api/contact/route.ts` — logs demo requests; swap the `console.log`
@@ -71,9 +79,3 @@ via `next/font` in `layout.tsx`.
 - Conventional commits: `feat: pricing tiers`, `fix: chat autoscroll`.
 - PRs into `main`; Vercel gives every PR a preview URL.
 - Track tasks as GitHub Issues on a simple Todo / In progress / Done board.
-
-## Month 2 pointer
-
-The only planned change: `api/chat/route.ts` swaps its canned replies for
-embed → retrieve → generate, reading from `src/content/` plus scraped pages,
-with source URLs stored per chunk so answers can link like `/contact` does today.

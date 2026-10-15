@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import ChatMessage, { type Message } from "./ChatMessage";
 import ChatInput from "./ChatInput";
-
-/* The embeddable product, v0. Everything here is deliberately self-contained:
-   in Month 2 only /api/chat changes (stub -> RAG); this component stays as is. */
 
 const greeting: Message = {
   role: "assistant",
@@ -14,6 +12,7 @@ const greeting: Message = {
 };
 
 export default function ChatWidget() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(true);
   const [messages, setMessages] = useState<Message[]>([greeting]);
   const [thinking, setThinking] = useState(false);
@@ -23,6 +22,8 @@ export default function ChatWidget() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, thinking, open]);
+
+  if (pathname === "/demo") return null;
 
   async function send(text: string) {
     const next: Message[] = [...messages, { role: "user", content: text }];

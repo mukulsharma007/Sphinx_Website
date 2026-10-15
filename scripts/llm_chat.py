@@ -5,7 +5,7 @@ from pathlib import Path
 import chromadb
 import ollama
 
-DB_PATH = 'data\chroma_db'
+DB_PATH = str(Path("data") / "chroma_db")
 COLLECTION_NAME = "documents"
 EMBED_MODEL = "bge-large:latest"
 CHAT_MODEL = "mistral:latest"
@@ -20,7 +20,7 @@ SYSTEM_PROMPT = (
 )
 
 
-def retrieve(question):
+def retrieve(question, session_id=None):
     """Embed the question and pull the closest documents out of Chroma."""
     client = chromadb.PersistentClient(path=DB_PATH)
     collection = client.get_collection(name=COLLECTION_NAME)
@@ -28,10 +28,15 @@ def retrieve(question):
     response = ollama.embeddings(model=EMBED_MODEL, prompt=question, keep_alive=True)
 
     # query_embeddings, not query_texts - the vectors came from Ollama
+    query_options = {}
+    if session_id:
+        query_options["where"] = {"session_id": session_id}
+
     results = collection.query(
         query_embeddings=[response["embedding"]],
         n_results=TOP_K,
         include=["documents", "metadatas"],
+        **query_options,
     )
 
     documents = results["documents"][0]
@@ -104,12 +109,20 @@ def main():
 
     question = history[-1]["content"]
 
+    session_id = payload.get("sessionId")
+    if session_id is not None and (
+        not isinstance(session_id, str)
+        or len(session_id) != 36
+        or any(char not in "0123456789abcdef-" for char in session_id.lower())
+    ):
+        reply("Invalid demo session.")
+        return
+
     try:
-        context = retrieve(question)
+        context = retrieve(question, session_id=session_id)
     except Exception as exc:
         print(f"retrieval failed: {exc}", file=sys.stderr)
-        reply("I couldn't search the site content right now.")
-        return
+        sys.exit(1)
 
     if not context:
         reply("I couldn't find anything about that on the site.")
@@ -119,7 +132,7 @@ def main():
         reply(answer(history, context))
     except Exception as exc:
         print(f"chat call failed: {exc}", file=sys.stderr)
-        reply("I couldn't generate a response just now. Please try again.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

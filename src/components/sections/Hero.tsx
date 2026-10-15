@@ -33,8 +33,8 @@ export default function Hero() {
           </p>
 
           <div className="fade-up fade-up-3 mt-8 flex flex-wrap gap-3">
-            <LinkButton href="/contact" size="lg">
-              Book a demo
+            <LinkButton href="/demo" size="lg">
+              Request a demo
             </LinkButton>
             <LinkButton href="/product" size="lg" variant="outline" className="text-bone">
               See how it works

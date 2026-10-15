@@ -42,8 +42,8 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <LinkButton href="/contact" size="md">
-            Book a demo
+          <LinkButton href="/demo" size="md">
+            Request a demo
           </LinkButton>
         </div>
 
@@ -78,8 +78,8 @@ export default function Navbar() {
                 {l.label}
               </Link>
             ))}
-            <LinkButton href="/contact" className="w-full" size="md">
-              Book a demo
+            <LinkButton href="/demo" className="w-full" size="md">
+              Request a demo
             </LinkButton>
           </div>
         </div>

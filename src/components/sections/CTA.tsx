@@ -15,8 +15,8 @@ export default function CTA() {
             you commit to anything.
           </p>
         </div>
-        <LinkButton href="/contact" size="lg" className="shrink-0">
-          Book a demo
+        <LinkButton href="/demo" size="lg" className="shrink-0">
+          Request a demo
         </LinkButton>
       </div>
     </section>
